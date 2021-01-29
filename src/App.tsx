@@ -1,3 +1,4 @@
+import Button from "./Button";
 import { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
@@ -23,15 +24,24 @@ function myFunc(callbackFunc: (arg: number) => void) {
 
 myFunc((num) => console.log("your number is" + num));
 
+// function myAwesomeFunction(arg1, arg2) {
+//   ...
+// }
+
+function foo(argument1: string) {}
+
+// console.log(argument1);
+
 // Every time a reactive piece gets changed, the whole
 // function gets called again
 function App() {
   const [count, setCount] = useState(0);
   const [step, setStep] = useState(1);
-  const [list, setList] = useState(["feed the cat", "do the dishes"]);
+  const [todoList, setList] = useState(["feed the cat", "do the dishes"]);
+  const showTime = true;
 
   const addNewItem = (newItem: string) => {
-    setList([...list, newItem]);
+    setList([...todoList, newItem]);
   };
 
   const increment = () => {
@@ -46,6 +56,16 @@ function App() {
     setStep(newStep);
   };
 
+  const logSomething = (message: string) => {
+    console.log("hello " + message);
+  };
+
+  const renderTime = () => {
+    if (showTime) {
+      return "The time is 12";
+    }
+  };
+
   return (
     <div>
       {count}
@@ -54,12 +74,45 @@ function App() {
       <br />
       <input
         value={step}
-        onChange={({ target: { value } }) => {
-          changeStep(Number(value));
+        onChange={(event) => {
+          // event.target.value  // what we typed
+          changeStep(Number(event.target.value));
         }}
       />
+      <Button text="Awesome button" onClick={logSomething}></Button>{" "}
+      {/* Always capitalize custom components */}
+      <Button
+        text="Super cool button"
+        color="red"
+        onClick={(message) => console.log(message)}
+      ></Button>
+      <Button text="Boring button" onClick={logSomething}></Button>
+      <ul>
+        {todoList.map((item) => {
+          return (
+            <Button text={item} onClick={logSomething} key={item}></Button>
+          );
+        })}
+      </ul>
+      {showTime && "The time is 12:00 pm"}
+      {renderTime()} {/* same thing */}
     </div>
   );
 }
+
+let time = "midnight";
+let student = "Kennedy";
+
+// short circuiting - when you reach a false, quit
+if (time === "noon" && student === "Kennedy") {
+  //short circuiting
+  console.log("Hey, its noon");
+}
+
+const numbers = [1, 2, 3, 4];
+console.log(numbers.map((num) => "my numbers is " + num));
+
+// map returns a new array
+// map: accepts a callback function that gets called with each value of the list, in order
 
 export default App;
